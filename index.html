@@ -3,143 +3,363 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spirometri | GLI-2012</title>
+    <title>Spirometritolkning & Gasutbyte – ViN</title>
     <style>
-        :root { --primary: #2c3e50; --blue: #3498db; --green: #27ae60; --orange: #f39c12; --red: #e74c3c; --bg: #f4f7f6; }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); padding: 15px; color: #333; max-width: 800px; margin: 20px auto; }
-        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        h1 { color: var(--primary); font-size: 1.6rem; border-bottom: 3px solid var(--blue); display: inline-block; margin-bottom: 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-bottom: 20px; }
-        .form-group { margin-bottom: 12px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.85rem; color: #555; }
-        input, select { width: 100%; padding: 10px; border: 2px solid #eee; border-radius: 8px; font-size: 1rem; box-sizing: border-box; }
-        .input-unit { position: relative; }
-        .input-unit::after { content: 'L'; position: absolute; right: 12px; top: 10px; color: #999; font-weight: bold; }
-        button { background: var(--primary); color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1.1rem; font-weight: bold; margin-top: 10px; }
-        #interpretation { margin-top: 20px; padding: 15px; border-radius: 8px; display: none; text-align: center; font-weight: bold; font-size: 1.2rem; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; display: none; font-size: 0.95rem; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
-        th { background: #f8f9fa; color: #666; text-transform: uppercase; font-size: 0.75rem; }
-        footer { margin-top: 30px; text-align: center; font-size: 0.75rem; color: #95a5a6; }
+        :root {
+            --primary-color: #1a365d;
+            --primary-light: #2b6cb0;
+            --text-color: #2d3748;
+            --bg-color: #ffffff;
+            --border-color: #e2e8f0;
+            
+            --normal-bg: #f0fff4;
+            --normal-border: #c6f6d5;
+            --normal-text: #22543d;
+            
+            --obstructive-bg: #fffaf0;
+            --obstructive-border: #feebc8;
+            --obstructive-text: #744210;
+            
+            --restrictive-bg: #fff5f5;
+            --restrictive-border: #fed7d7;
+            --restrictive-text: #742a2a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 8px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+
+        .calculator-card {
+            max-width: 620px;
+            margin: 0 auto;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 14px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .header-section {
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 6px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            font-size: 15px;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .clinic-tag {
+            font-size: 10px;
+            font-weight: 600;
+            background-color: #edf2f7;
+            color: #4a5568;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 11px;
+            color: #4a5568;
+            margin-bottom: 3px;
+        }
+
+        input, select {
+            font-family: inherit;
+            font-size: 14px;
+            padding: 5px 8px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            background-color: #fff;
+            color: var(--text-color);
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+        }
+
+        .actions-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        button {
+            font-family: inherit;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 8px 14px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .btn-submit {
+            background-color: var(--primary-color);
+            color: white;
+            flex-grow: 1;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--primary-light);
+        }
+
+        .btn-reset {
+            background-color: #edf2f7;
+            color: #4a5568;
+            width: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-reset:hover {
+            background-color: #e2e8f0;
+        }
+
+        .output-panel {
+            margin-top: 14px;
+            padding: 12px;
+            border-radius: 4px;
+            display: none;
+            border: 1px solid transparent;
+        }
+
+        .output-panel.status-normal { display: block; background-color: var(--normal-bg); border-color: var(--normal-border); color: var(--normal-text); }
+        .output-panel.status-obstructive { display: block; background-color: var(--obstructive-bg); border-color: var(--obstructive-border); color: var(--obstructive-text); }
+        .output-panel.status-restrictive { display: block; background-color: var(--restrictive-bg); border-color: var(--restrictive-border); color: var(--restrictive-text); }
+
+        .output-header { font-weight: 700; font-size: 14px; margin-bottom: 6px; border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 2px; }
+        .output-metrics { font-size: 12.5px; margin-bottom: 6px; line-height: 1.35; }
+        .output-interpretation { font-size: 13px; font-weight: 500; line-height: 1.4; }
+        .guideline-bullet { margin-top: 4px; padding-left: 16px; margin-bottom: 0; }
+        .alert-marker { font-weight: 700; color: #c53030; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h1>Spirometri (GLI-2012)</h1>
-    
-    <div class="grid">
-        <div class="form-group"><label>Ålder (år)</label><input type="number" id="age" placeholder="t.ex. 65"></div>
-        <div class="form-group"><label>Längd (cm)</label><input type="number" id="height" placeholder="t.ex. 175"></div>
+<div class="calculator-card">
+    <div class="header-section">
+        <h1>Spirometritolkning & Gasutbyte</h1>
+        <span class="clinic-tag">Kardiologiska Kliniken ViN</span>
+    </div>
+
+    <div class="form-grid">
         <div class="form-group">
-            <label>Kön</label>
-            <select id="gender"><option value="male">Man</option><option value="female">Kvinna</option></select>
+            <label for="fev1">FEV₁ (Före br.dil, L) *</label>
+            <input type="number" id="fev1" step="0.01" min="0.1" max="10" placeholder="t.ex. 2.19" required>
+        </div>
+        <div class="form-group">
+            <label for="fvc">FVC (Forcerad VC, L) *</label>
+            <input type="number" id="fvc" step="0.01" min="0.1" max="10" placeholder="t.ex. 3.45" required>
+        </div>
+        <div class="form-group">
+            <label for="svc">SVC / IVC (Långsam VC, L)</label>
+            <input type="number" id="svc" step="0.01" min="0.1" max="10" placeholder="Om tillgängligt">
+        </div>
+        <div class="form-group">
+            <label for="fev1_pred">FEV₁ (% av förväntat Ref)</label>
+            <input type="number" id="fev1_pred" step="0.1" min="5" max="150" placeholder="t.ex. 63.5">
+        </div>
+        <div class="form-group">
+            <label for="dlco">DLCO (% av förväntat, Hb-korr.)</label>
+            <input type="number" id="dlco" step="0.1" min="5" max="200" placeholder="t.ex. 72.0">
+        </div>
+        <div class="form-group">
+            <label for="fev1_post">FEV₁ (Efter br.dil, L)</label>
+            <input type="number" id="fev1_post" step="0.01" min="0.1" max="10" placeholder="Lämna blank om ej utfört">
+        </div>
+        <div class="form-group full-width">
+            <label for="anamnes">Klinisk misstanke / Kontextualisering</label>
+            <select id="anamnes">
+                <option value="none">Standardtolkning (ingen specifik kardiell/respiratorisk indikation)</option>
+                <option value="asthma">Astmamisstanke (variabla besvär, allergenexposition)</option>
+                <option value="copd">KOL-misstanke (riskfaktorer, tobaksanamnes, kronisk dyspné)</option>
+                <option value="heart">Misstänkt eller känd inkompenserad hjärtsvikt</option>
+            </select>
         </div>
     </div>
 
-    <div class="grid">
-        <div class="form-group"><label>FEV1</label><div class="input-unit"><input type="number" id="m_fev1" step="0.01"></div></div>
-        <div class="form-group"><label>FVC</label><div class="input-unit"><input type="number" id="m_fvc" step="0.01"></div></div>
+    <div class="actions-row">
+        <button class="btn-submit" onclick="executeInterpretation()">Analysera Lungfunktion</button>
+        <button class="btn-reset" onclick="resetCalculator()" title="Nollställ">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+            </svg>
+        </button>
     </div>
 
-    <button onclick="calculate()">Beräkna Z-score & Tolkning</button>
-
-    <div id="interpretation"></div>
-
-    <table id="resultTable">
-        <thead>
-            <tr>
-                <th>Parameter</th>
-                <th>Uppmätt</th>
-                <th>Resultat (% av förväntat (Z-score))</th>
-            </tr>
-        </thead>
-        <tbody id="resultBody"></tbody>
-    </table>
+    <div id="outputPanel" class="output-panel"></div>
 </div>
 
-<footer>
-    <strong>Standard:</strong> Global Lung Function Initiative (GLI-2012) - Caucasian.
-</footer>
-
 <script>
-    function getGLI(param, gender, age, height) {
-        const isMale = gender === 'male';
-        let m, s, l = 1;
-
-        if (param === 'FEV1') {
-            m = isMale ? Math.exp(-11.1 + 2.22 * Math.log(height) - 0.012 * age) : Math.exp(-10.5 + 2.1 * Math.log(height) - 0.011 * age);
-            s = 0.11;
-        } else if (param === 'FVC') {
-            m = isMale ? Math.exp(-11.5 + 2.32 * Math.log(height) - 0.009 * age) : Math.exp(-10.8 + 2.2 * Math.log(height) - 0.008 * age);
-            s = 0.12;
-        } else { // FEV1/FVC
-            m = isMale ? 0.82 - (0.002 * age) : 0.85 - (0.002 * age);
-            s = 0.07;
-        }
-        return { m, s, l };
+    function resetCalculator() {
+        document.getElementById('fev1').value = '';
+        document.getElementById('fvc').value = '';
+        document.getElementById('svc').value = '';
+        document.getElementById('fev1_pred').value = '';
+        document.getElementById('dlco').value = '';
+        document.getElementById('fev1_post').value = '';
+        document.getElementById('anamnes').value = 'none';
+        
+        const out = document.getElementById('outputPanel');
+        out.style.display = 'none';
+        out.className = 'output-panel';
+        out.innerHTML = '';
     }
 
-    function calculate() {
-        const age = parseFloat(document.getElementById('age').value);
-        const height = parseFloat(document.getElementById('height').value);
-        const gender = document.getElementById('gender').value;
-        const fev1 = parseFloat(document.getElementById('m_fev1').value);
-        const fvc = parseFloat(document.getElementById('m_fvc').value);
+    function executeInterpretation() {
+        const fev1 = parseFloat(document.getElementById('fev1').value);
+        const fvc = parseFloat(document.getElementById('fvc').value);
+        const svc = parseFloat(document.getElementById('svc').value) || 0;
+        const fev1_pred = parseFloat(document.getElementById('fev1_pred').value) || null;
+        const dlco = parseFloat(document.getElementById('dlco').value) || null;
+        const fev1_post = parseFloat(document.getElementById('fev1_post').value) || null;
+        const anamnes = document.getElementById('anamnes').value;
+        const out = document.getElementById('outputPanel');
 
-        if (!age || !height || !fev1 || !fvc) return;
-
-        const kvot = fev1 / fvc;
-        const gliFEV1 = getGLI('FEV1', gender, age, height);
-        const gliFVC = getGLI('FVC', gender, age, height);
-        const gliKvot = getGLI('Kvot', gender, age, height);
-
-        const results = [
-            { id: 'FEV1', val: fev1, gli: gliFEV1 },
-            { id: 'FVC', val: fvc, gli: gliFVC },
-            { id: 'FEV1/FVC', val: kvot, gli: gliKvot }
-        ];
-
-        // Tolkningslogik (ERS/ATS baserat på Z-score)
-        const zKvot = (Math.pow(kvot / gliKvot.m, gliKvot.l) - 1) / (gliKvot.l * gliKvot.s);
-        const zFVC = (Math.pow(fvc / gliFVC.m, gliFVC.l) - 1) / (gliFVC.l * gliFVC.s);
-        
-        let interpText = ""; let interpColor = "";
-        
-        if (zKvot < -1.645) {
-            interpText = "OBSTRUKTIVITET";
-            interpColor = var(--red);
-        } else if (zFVC < -1.645) {
-            interpText = "RESTRIKTIVITET (Misstänkt)";
-            interpColor = var(--orange);
-        } else {
-            interpText = "NORMAL SPIROMETRI";
-            interpColor = var(--green);
+        if (!fev1 || !fvc) {
+            out.style.display = 'block';
+            out.className = 'output-panel status-restrictive';
+            out.innerHTML = '<div class="output-header">Inmatning saknas</div><div class="output-interpretation">FEV₁ och FVC krävs för beräkning.</div>';
+            return;
         }
 
-        const interpDiv = document.getElementById('interpretation');
-        interpDiv.style.display = 'block';
-        interpDiv.style.color = 'white';
-        interpDiv.style.backgroundColor = interpColor === 'var(--red)' ? '#e74c3c' : (interpColor === 'var(--orange)' ? '#f39c12' : '#27ae60');
-        interpDiv.innerText = interpText;
+        // Region Stockholm: Använd högsta tillgängliga vitalkapacitet (FVC vs SVC/IVC)
+        const maxVC = Math.max(fvc, svc);
+        const kvotPre = fev1 / maxVC;
+        const kvotPost = fev1_post ? (fev1_post / maxVC) : null;
+        
+        let classification = 'normal';
+        let headerText = 'Normal Dynamisk Spirometri';
+        let metricsText = `Pre-kvot (FEV₁/VC): <b>${kvotPre.toFixed(2)}</b> (Högsta använda VC: ${maxVC.toFixed(2)} L).`;
+        let interpText = '';
 
-        const tbody = document.getElementById('resultBody');
-        tbody.innerHTML = '';
+        const isObstructivePre = kvotPre < 0.70;
+        const isObstructivePost = fev1_post ? (kvotPost < 0.70) : isObstructivePre;
 
-        results.forEach(t => {
-            const perc = (t.val / t.gli.m) * 100;
-            const z = (Math.pow(t.val / t.gli.m, t.gli.l) - 1) / (t.gli.l * t.gli.s);
+        // SCENARIO 1: OBSTRUKTIVITET
+        if (isObstructivePre) {
+            classification = 'obstructive';
+            headerText = 'Luftvägsobstruktion Påvisad';
             
-            tbody.innerHTML += `
-                <tr>
-                    <td><strong>${t.id}</strong></td>
-                    <td>${t.id === 'FEV1/FVC' ? t.val.toFixed(2) : t.val.toFixed(2) + ' L'}</td>
-                    <td>${perc.toFixed(0)}% (${z.toFixed(2)})</td>
-                </tr>`;
-        });
+            if (fev1_post) {
+                const absChange = Math.round((fev1_post - fev1) * 1000);
+                const pctChange = ((fev1_post - fev1) / fev1) * 100;
+                metricsText += `<br>Post-kvot: <b>${kvotPost.toFixed(2)}</b> | Reversibilitet: <b>+${absChange} ml</b> (+${pctChange.toFixed(1)}%).`;
+                
+                if (absChange >= 200 && pctChange >= 12) {
+                    interpText += '<b>Signifikant och kliniskt relevant reversibilitet verifierad.</b> ';
+                    if (anamnes === 'asthma' || kvotPost >= 0.70) {
+                        interpText += 'Fyndet i kombination med anamnesen talar starkt för <b>Astma</b>.';
+                    } else {
+                        interpText += 'Betydande reversibilitet föreligger, men eftersom fixerad kvot kvarstår post-bronkodilatation bör Astma-KOL-överlappning övervägas.';
+                    }
+                } else {
+                    interpText += '<b>Ej signifikant reversibilitet (&lt;200 ml eller &lt;12%).</b> ';
+                    if (isObstructivePost) {
+                        interpText += 'Fixerad luftvägsobstruktion post-bronkodilatation bekräftar den spirometriska bilden av <b>KOL</b>.';
+                    }
+                }
+            } else {
+                metricsText += '<br><span class="alert-marker">OBS!</span> Reversibilitetstest (Post-värde) saknas.';
+                interpText += 'Enligt gällande riktlinjer krävs ett post-bronkodilatatoriskt test för att formellt differentiera astma från KOL.';
+            }
 
-        document.getElementById('resultTable').style.display = 'table';
+            if (fev1_pred !== null && isObstructivePost) {
+                let goldStage = '';
+                if (fev1_pred >= 80) goldStage = 'GOLD 1 (Mild)';
+                else if (fev1_pred >= 50) goldStage = 'GOLD 2 (Moderat)';
+                else if (fev1_pred >= 30) goldStage = 'GOLD 3 (Allvarlig)';
+                else goldStage = 'GOLD 4 (Mycket allvarlig)';
+                interpText += `<br><br><b>Spirometrisk svårighetsgrad (KOL GOLD):</b> ${goldStage} baserat på FEV₁ ${fev1_pred}% av förväntat.`;
+            }
+
+            if (dlco !== null) {
+                interpText += `<br><br><b>Diffusionskapacitet (DLCO):</b> ${dlco.toFixed(1)}% av förväntat. `;
+                if (dlco < 80) {
+                    interpText += 'Reducerat gasutbyte indikerar alveolär destruktion, starkt talande för emfysematös komponent vid <b>KOL</b>.';
+                } else {
+                    interpText += 'Bevarad diffusionskapacitet stöder intakt alveolokapillär bädd, typiskt för <b>Astma</b>.';
+                }
+            }
+        } 
+        // SCENARIO 2: MISSTÄNKT RESTRIKTIVITET
+        else if (kvotPre >= 0.70 && maxVC < 2.0 && fvc < 2.5) { 
+            classification = 'restrictive';
+            headerText = 'Misstänkt Restriktiv Ventilationsinskränkning';
+            interpText = 'Bevarad eller förhöjd kvot i kombination med sänkta lungvolymer (FVC) ger misstanke om restriktivitet.<br><br><b>Primär handläggning (enligt lathund):</b>' +
+                         '<ul class="guideline-bullet">' +
+                         '<li>Uteslut submaximal utandning (falskt låg FVC ger en artificiellt för hög kvot).</li>' +
+                         '<li>Uteslut mekaniska hinder (obesitas, bröstkorgsdeformitet).</li>' +
+                         '<li>Beakta eventuell inkompenserad hjärtsvikt.</li>' +
+                         '</ul>';
+
+            if (dlco !== null) {
+                interpText += `<br><b>Diffusionskapacitet (DLCO):</b> ${dlco.toFixed(1)}% av förväntat. `;
+                if (dlco < 80) {
+                    interpText += 'Kombinationen av sänkta volymer och nedsatt gasutbyte talar för <b>intrapulmonell/parenkymatös restriktivitet (t.ex. lungfibros / ILD)</b>. Vidare utredning med statisk spirometri (TLC) via fysiologlaboratorium samt DT-thorax krävs.';
+                } else {
+                    interpText += 'Normalt gasutbyte indicerar primärt en <b>extrapulmonell orsak</b> till volymminskningen (t.ex. adipositas eller submaximal medverkan).';
+                }
+            }
+        } 
+        // SCENARIO 3: NORMALT MÖNSTER (MED KONTROLL AV ISOLERAT SÄNKT DLCO)
+        else {
+            classification = 'normal';
+            headerText = 'Normal Dynamisk Spirometri';
+            interpText = 'Uppmätta flöden och volymer ligger inom normalområdet pre-bronkodilatation.';
+            
+            if (anamnes === 'asthma') {
+                interpText += '<br><br><b>Klinisk kommentar:</b> Normal spirometri utesluter inte astma på grund av sjukdomens variabla karaktär. Överväg PEF-kurva i hemmet under 2 veckor vid kvarstående misstanke.';
+            }
+
+            if (dlco !== null && dlco < 80) {
+                classification = 'restrictive';
+                headerText = 'Isolerat Sänkt Diffusionskapacitet';
+                interpText = `Normal spirometri men sänkt gasutbyte (DLCO: ${dlco.toFixed(1)}%).<br><br><span class="alert-marker">Viktigt kardiellt/vaskulärt fynd:</span> Detta isolerade mönster ska föranleda värdering avseende <b>pulmonell vaskulär sjukdom</b> (PAH/CTEPH), <b>tidig interstitiell lungsjukdom</b> eller <b>kardiell svikt</b>. Kontrollera även att värdet korrigerats för eventuell anemi.`;
+            }
+        }
+
+        if (anamnes === 'heart') {
+            interpText += '<br><br>⚠️ <b>Kardiologisk sammansmältning (ViN):</b> Inkompenserad hjärtsvikt ökar det alveolokapillära diffusionsavståndet på grund av interstitiellt ödem, vilket reducerar DLCO och kan ge sänkta volymer som simulerar restriktivitet. Patienten bör utvärderas i optimalt kompenserat och vätskebalanserat skede.';
+        }
+
+        out.className = `output-panel status-${classification}`;
+        out.innerHTML = `<div class="output-header">${headerText}</div><div class="output-metrics">${metricsText}</div><div class="output-interpretation">${interpText}</div>`;
     }
 </script>
+
 </body>
 </html>
